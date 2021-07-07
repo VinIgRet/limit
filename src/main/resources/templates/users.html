@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<body>
+<th:block layout:fragment="content">
+    <div class="section">
+        <table class="work-head">
+            <tr>
+                <th class="work-no-sort">Пользователи</th>
+            </tr>
+        </table>
+        <div id="ask_users" style="display:none">&nbsp;</div>
+        <form id="form_userlist" th:action="@{/users}" method="post">
+            <table id="userlist" class="work tablesort" data-listlink="" data-sf="" data-lstp="">
+                <tbody class="listheader">
+                    <tr class="head-cntrl nodrag nodrop">
+                        <td colspan="7">&nbsp;
+                            <div class="paginat amount">
+                                <a class="pages pagnu_10" th:href="@{/users?n={id}(id=1)}" th:classappend="${zapPage.size == 1} ? 'disabled selpag'" data-nu="1">1</a>
+                                <a class="pages pagnu_10" th:href="@{/users?n={id}(id=2)}" th:classappend="${zapPage.size == 2} ? 'disabled selpag'" data-nu="2">2</a>
+                                <a class="pages pagnu_10" th:href="@{/users?n={id}(id=10)}" th:classappend="${zapPage.size == 10} ? 'disabled selpag'" data-nu="10">10</a>
+                                <a class="pages pagnu_25" th:href="@{/users?n={id}(id=25)}" th:classappend="${zapPage.size == 25} ? 'disabled selpag'" data-nu="25">25</a>
+                                <a class="pages pagnu_50" th:href="@{/users?n={id}(id=50)}" th:classappend="${zapPage.size == 50} ? 'disabled selpag'" data-nu="50">50</a>
+                                <a class="pages pagnu_75" th:href="@{/users?n={id}(id=75)}" th:classappend="${zapPage.size == 75} ? 'disabled selpag'" data-nu="75">75</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="nodrag nodrop">
+                        <th class="work-no-sort sw30"></th>
+                        <th class="work-no-sort sw100">ID</th>
+                        <th class="work-no-sort pw47">пользователь</th>
+                        <th class="work-no-sort">учреждение</th>
+                        <th class="work-no-sort pw20">роль</th>
+                        <th class="work-no-sort" >состояние</th>
+                        <th class="work-no-sort pw10"></th>
+                    </tr>
+                </tbody>
+                <tbody class="listbody ajaxlist">
+                    <tr th:each="tekuser, stat : ${zapPage.content}">
+                        <td>
+                            <input class="chkselect" type="checkbox" th:name="'array['+${tekuser.id}+']'" value="yes" onclick="this.checked=!this.checked">
+                        </td>
+                        <td th:utext="${tekuser.id}"></td>
+                        <td th:text="${tekuser.title}"></td>
+                        <td></td>
+                        <td th:text="${tekuser.isAdmin ? 'Администратор' : ''}"></td>
+                        <td th:text="${tekuser.isEnabled ? 'Активный' : 'Отключенный'}"></td>
+                        <td class="gov">
+                            <a class="edit" th:href="${'users/'+tekuser.id}"><img th:src="@{/images/edit.png}" alt="Открыть"></a>
+                            <a th:if="${admview && #authentication.name != tekuser.login}" class="del" th:href="${'users/'+tekuser.id+'?del'}"><img th:src="@{/images/del.png}" alt="Удалить"></a>
+                        </td>
+                    </tr>
+                    <tr th:if="${zapPage.content.size == 0}" class="list nodrag nodrop no_del no_move no_act no_deact no_edit no_acc" id="lst_0" data-id="0">
+                        <td colspan="4" class="ac vm">Данный отсутствуют</td>
+                    </tr>
+                </tbody>
+                <tbody class="listfooter">
+                    <tr class="foot-cntrl nodrag nodrop">
+                        <td colspan="7">&nbsp;
+                            <div class="paginat listpags">
+                                <a class="pages"
+                                   th:each="i : ${listPage}"
+                                   th:href="@{/users?p={id}(id=${i})}" th:text="${i}"
+                                   th:classappend="${i eq zapPage.number + 1} ? 'disabled selpag pagp_'+${i}"
+                                ></a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</th:block>
+</body>
+</html>

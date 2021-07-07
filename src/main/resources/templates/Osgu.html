@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}">
+<th:block layout:fragment="content">
+  <div class="section">
+    <form th:action="@{/login}" method="post">
+      <table class="work">
+        <caption>Классификация операций сектора государственного управления</caption>
+        <tr>
+          <td class="first"><span>*</span>Код</td>
+          <td>
+            <input type="text" name="kod" id="kod" size="3" th:value="${zap.kod}" th:errorclass="error" required="required" />
+          </td>
+        </tr>
+        <tr>
+          <td><span>*</span>Наименование</td>
+          <td>
+            <input type="text" name="name" class="pw100" th:value="${zap.name}" th:errorclass="error" required="required"/>
+          </td>
+        </tr>
+        <tr>
+          <td>Дата начала действия</td>
+          <td>
+            <input type="datetime-local" name="dateStart" id="dateStart" th:value="${zap.dateStart}"  th:errorclass="error" size="10" />
+          </td>
+        </tr>
+        <tr>
+          <td>Дата окончания действия</td>
+          <td>
+            <input type="datetime-local" name="dateEnd" name="dateEnd" th:value="${zap.dateEnd}" size="10" th:errorclass="error" />
+          </td>
+        </tr>
+        <tr class="tfoot">
+          <td colspan="2">
+            <ul th:if="${#fields.hasErrors('*')}">
+              <li th:each="error : ${#fields.errors('*')}" th:text="${error}">error</li>
+            </ul>
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            <input type="hidden" name="id" th:value="${zap.id}" />
+            <input class="main-button" value="Сохранить" type="submit" />
+          </td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</th:block>
+</body>
+</html>

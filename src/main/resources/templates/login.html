@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" >
+<head>
+  <meta charset="utf-8">
+  <title>Учет коммунальных услуг</title>
+  <link rel="stylesheet" th:href="@{/css/loginold.css}">
+</head>
+<body>
+<div th:if="${param.error}" class="bad-cookie">Неправильные имя и пароль.</div>
+<div class="core">
+  <div class="content">
+    <h1>Вход</h1>
+    <form th:action="@{/login}" method="post">
+      <label for="username">Логин</label>
+      <input type="text" name="username" id="username" maxlength="15" required="required" autofocus="autofocus" /><br />
+      <label for="password">Пароль</label>
+      <input type="password" name="password" id="password" maxlength="15" required="required" /><br />
+      <label></label>
+      <input class="blogin" type="submit" value="Войти" />
+      <a th:href="@{/registration}">Зарегистрироваться</a>
+    </form>
+  </div>
+</div>
+<div class="powered"><a href="#" target="_blank">VinIgRet76</a><i>©</i> 2021</div>
+</body>
+</html>

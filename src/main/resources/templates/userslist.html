@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<body>
+<th:block layout:fragment="content">
+    <div class="section">
+        <table class="work-head">
+            <tr>
+                <th class="work-no-sort">Пользователи</th>
+            </tr>
+        </table>
+        <div id="ask_users" style="display:none">&nbsp;</div>
+        <div id ="fulllist">
+        <form id="form_userlist" th:action="@{/users/list}" method="post">
+            <table id="list" class="work tablesort" th:data-listlink="@{/users/list/update}" data-sf="" data-lstp="">
+                <th:block th:fragment="fulllistUser">
+                <tbody class="listheader">
+                    <tr class="head-cntrl nodrag nodrop">
+                        <td colspan="6">&nbsp;
+                            <div class="paginat amount">
+                                <a class="pages pagnu_10" href="javascript:void(0)" th:classappend="${zapPage.size == 1} ? 'disabled selpag'" data-n="1">1</a>
+                                <a class="pages pagnu_10" href="javascript:void(0)" th:classappend="${zapPage.size == 2} ? 'disabled selpag'" data-n="2">2</a>
+                                <a class="pages pagnu_10" href="javascript:void(0)" th:classappend="${zapPage.size == 10} ? 'disabled selpag'" data-n="10">10</a>
+                                <a class="pages pagnu_25" href="javascript:void(0)" th:classappend="${zapPage.size == 25} ? 'disabled selpag'" data-n="25">25</a>
+                                <a class="pages pagnu_50" href="javascript:void(0)" th:classappend="${zapPage.size == 50} ? 'disabled selpag'" data-n="50">50</a>
+                                <a class="pages pagnu_75" href="javascript:void(0)" th:classappend="${zapPage.size == 75} ? 'disabled selpag'" data-n="75">75</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="nodrag nodrop">
+                        <th class="work-no-sort sw30"></th>
+                        <th class="work-no-sort sw100">ID</th>
+                        <th class="work-no-sort pw47">пользователь</th>
+                        <th class="work-no-sort">учреждение</th>
+                        <th class="work-no-sort pw20">роль</th>
+                        <th class="work-no-sort" >состояние</th>
+                    </tr>
+                </tbody>
+                <tbody class="listbody ajaxlist">
+                    <tr th:each="tekuser, stat : ${zapPage.content}" th:id="list+${tekuser.id}" class="list site lstp_0" th:data-id="${tekuser.id}" th:classappend="${tekuser.isEnabled ? 'no_act' : 'no_deact noactive'}">
+                        <td>
+                            <input class="chkselect" type="checkbox" th:name="'array[]'" th:value="${tekuser.id}" onclick="this.checked=!this.checked">
+                        </td>
+                        <td th:utext="${tekuser.id}"></td>
+                        <td th:text="${tekuser.title}"></td>
+                        <td></td>
+                        <td th:text="${tekuser.isAdmin ? 'Администратор' : ''}"></td>
+                        <td th:text="${tekuser.isEnabled ? 'Активный' : 'Отключенный'}"></td>
+                    </tr>
+                    <tr th:if="${zapPage.content.size == 0}" class="list nodrag nodrop no_del no_move no_act no_deact no_edit no_acc" id="lst_0" data-id="0">
+                        <td colspan="6" class="ac vm">Данные отсутствуют</td>
+                    </tr>
+                </tbody>
+                <tbody class="listfooter">
+                    <tr class="foot-cntrl nodrag nodrop">
+                        <td colspan="6">&nbsp;
+                            <div th:replace="fragments/sections :: listfield"></div>
+                            <div class="paginat listpags">
+                                <a class="pages"
+                                   th:each="i : ${listPage}"
+                                   href="javascript:void(0)" th:text="${i}"
+                                   th:classappend="${i eq zapPage.number + 1} ? 'disabled selpag pagp_'+${i}"
+                                   th:data-p="${i}"
+                                ></a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                </th:block>
+            </table>
+        </form>
+        </div>
+        <script th:src="@{/js/jquery.listDnD.js}"></script>
+        <script>
+            $(function(){
+                $("#list").listDnD(
+                    {
+                        ajax:true,
+                        isDragable:false,
+                        isNumerable:true,
+                        pagination:true,
+                        toolBar:true,
+                        multySelect:true,
+                        contMenuList:[
+                            {
+                                label:"Добавить",
+                                action:"add",
+                            },
+                            {
+                                label:"Редактировать",
+                                action:"edit",
+                                singl:true
+                            },
+                            {
+                                label:"Вкл.",
+                                action:"act",
+                                singl:true
+                            },
+                            {
+                                label:"Выкл.",
+                                action:"deact",
+                                singl:true
+                            },
+                            {
+                                label:"Удалить",
+                                action:"del",
+                                singl:true,
+                                mult:true
+                            }
+                        ],
+                        actionLink:{
+                            add:{
+                                lnk:"[[@{/users/add/}]]",
+                                ajax:false,
+                                method:"get"
+                            },
+                            edit:{
+                                lnk:"[[@{/users/edit/}]]",
+                                ajax:false,
+                                data:"id",
+                                method:"get"
+                            },
+                            act:{
+                                lnk:"[[@{/users/act}]]",
+                                ajax:true,
+                                method:"post"
+                            },
+                            deact:{
+                                lnk:"[[@{/users/deact}]]",
+                                ajax:true,
+                                method:"post"
+                            },
+                            del:{
+                                lnk:"[[@{/users/delete}]]",
+                                ajax:true,
+                                method:"post",
+                                ask:true
+                            }
+                        }
+                    }
+                );
+            });
+        </script>
+    </div>
+</th:block>
+
+<th:block th:fragment="listDelAsk">
+    <form th:action="@{/users/delete}" method="delete">
+        <table id="arr-work" class="fb-work">
+            <caption>Удалить</caption>
+            <tbody>
+            <tr>
+                <td class="cont">
+                    <strong>Выбрано: [[${listForm.array.size}]] записей</strong>
+                    <br>
+                    <strong>Внимание!</strong>
+                    <br>
+                    Выбранные записи будут удалены
+                    <br>
+                    Вы подтверждаете удаление?
+                </td>
+            </tr>
+            <tr class="tfoot">
+                <td>
+                    <input th:each="tekzap : ${listForm.array}" type="hidden" name="array[]" th:value="${tekzap}">
+                    <input type="hidden" name="p" th:value="${listForm.p}">
+                    <input type="hidden" name="n" th:value="${listForm.n}">
+                    <input type="hidden" name="s" th:value="${listForm.s}">
+                    <input type="hidden" name="l" th:value="${listForm.l}">
+                    <input type="hidden" id="action" name="a" th:value="${listForm.a}">
+                    <input class="side-button" value="Выполнить" type="submit">&nbsp;&nbsp;
+                    <input class="side-button" onclick="javascript:$.colorbox.close();" value="Отменить" type="button">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</th:block>
+</body>
+</html>

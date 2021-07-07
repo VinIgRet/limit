@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<body>
+
+<div th:fragment="sidemenu">
+  <!--
+    <div>
+      <div id="profile" class="bmh">
+        <a class="" href="/profile">Профиль пользователя</a>
+      </div>
+    </div>
+  -->
+    <div>
+      <div id="sprav" class="bmh">
+        <span class="" >Справочники</span>
+        <span class="togl"></span>
+      </div>
+      <div class="bmc1" style="display:block">
+        <div sec:authorize="hasRole('ROLE_ADMIN')">
+          <div id="users" class="pmh">
+            <a class="" th:href="@{/users/list}">Список пользователей</a>
+          </div>
+        </div>
+        <div>
+          <div id="users" class="pmh">
+            <span class="">Юридические лица</span>
+            <span class="togl"></span>
+          </div>
+          <div class="pmc" style="display:none">
+            <a class="interface " th:href="@{/uchr/list}">Учетные учреждения</a>
+            <a class="interface " th:href="@{/kontr/list}">Контрагенты</a>
+          </div>
+        </div>
+        <div>
+          <div id="nods" class="pmh">
+            <span class="">Бюджетная классификация</span>
+            <span class="togl"></span>
+          </div>
+          <div class="pmc" style="display:none">
+            <a class="interface " href="/obesp">Финансовое обеспечение</a>
+            <a class="interface " href="/osgu">Классфикатор ОСГУ</a>
+            <a class="interface " href="/dopklass">Доп. классификация</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div id="info" class="bmh">
+        <span class="">Учетные данные</span>
+        <span class="togl"></span>
+      </div>
+      <div class="bmc1" style="display:block">
+        <div>
+          <div id="options" class="pmh">
+            <a class="" href="#">Общие настройки</a>
+          </div>
+        </div>
+        <div>
+          <div id="search" class="pmh">
+            <a class="" href="#">Отчеты</a>
+          </div>
+        </div>
+        <div>
+          <div id="mods" class="pmh">
+            <span class="">Данные учета</span>
+            <span class="togl"></span>
+          </div>
+          <div class="pmc" style="display:none">
+            <a class="interface " href="#">Показания приборов</a>
+            <a class="interface " href="#">Доведенные лимиты</a>
+            <a class="interface " href="#">Фактическое потребление</a>
+          </div>
+        </div>
+      </div>
+    </div>
+<!--
+    <div>
+      <div id="logout" class="bmh">
+        <a class="" href="/logout">Выход</a>
+      </div>
+    </div>
+  -->
+</div>
+</body>
+</html>

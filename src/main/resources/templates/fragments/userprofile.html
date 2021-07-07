@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<body>
+<div class="section" th:fragment="userprofile">
+  <table class="work-head" >
+    <tr>
+      <th class="work-no-sort">Пользователь</th>
+      <th class="work-no-sort">
+        <a class="main-button" th:href="@{${userForm.returnhttp}}">Выход</a>
+      </th>
+    </tr>
+  </table>
+  <table class="work work-head">
+    <tr>
+      <td class="sw0"></td>
+      <td>
+        <div class="tabs" id="tabs">
+          <a href="javascript:void(0);" th:data-tabs="${userForm.action == '.reg' ? '.reg' : '.osn'}">Основные данные</a>
+          <a th:if="${(admview or selfedit)} and ${userForm.action != '.reg'}" href="javascript:void(0);" data-tabs=".mailchng">Смена E-mail</a>
+          <a th:if="${(admview or selfedit)} and ${userForm.action != '.reg'}" href="javascript:void(0);" data-tabs=".passchng">Смена пароля</a>
+        </div>
+      </td>
+    </tr>
+  </table>
+  <div th:errors="${userForm}">...</div>
+  <form th:action="@{/profile}" method="post">
+    <table class="work">
+      <tr><th colspan="2"</th></tr>
+      <tr class="osn reg"><td class="first">Логин</td>
+        <td>
+          <input type="text" name="login" id="login" th:value="${userForm.login}" size="70" th:if="${userForm.action == '.reg'}"/>
+          <span class ="site" th:text="${userForm.login}" th:if="${userForm.action != '.reg'}"/>
+          <strong class="error" th:if="${#fields.hasErrors('userForm.login') && userForm.action == '.reg'}" th:errors="${userForm.login}"></strong>
+        </td>
+      </tr>
+      <tr class="osn" th:if="${userForm.action != '.reg'}">
+        <td class="first">E-mail</td>
+        <td>
+          <span class ="site" th:text="${userForm.emailOld}"/>
+        </td>
+      </tr>
+      <tr class="osn reg">
+        <td class="first">Отображаемое имя</td>
+        <td>
+          <span th:if="${!admview && !selfedit}" th:utext="${userForm.title}" class="pw100"></span>
+          <input th:if="${admview or selfedit}" type="text" name="title" id="title" th:value="${userForm.title}" class="pw100" />
+          <strong class="error" th:if="${#fields.hasErrors('userForm.title')  && (userForm.action == '.osn' || userForm.action == '.reg')}" th:errors="${userForm.title}"></strong>
+        </td>
+      </tr>
+      <tr class="osn" >
+        <td class="first">Предоставленные права</td>
+        <td>
+          <span th:if="${!admview or selfedit}" class ="site" th:text="${userForm.isAdmin ? 'Администратор' : 'Пользователь'}"/>
+          <select th:if="${admview && !selfedit}" id="admin" name = "admin" class="pw100">
+            <option value = "0" th:selected="${!userForm.isAdmin}">Права пользователя</option>
+            <option value = "1" th:selected="${userForm.isAdmin}">Права администратора</option>
+          </select>
+        </td>
+      </tr>
+      <tr class="osn reg" >
+        <td class="first">Привязка к учреждению</td>
+        <td>
+          <select id="uchetUL" name = "uchetUL" class="pw100">
+            <option value = "0">------------------------</option>
+            <th:block th:replace="fragments/sections :: optionUchetUl"></th:block>
+          </select>
+        </td>
+      </tr>
+      <tr class="osn reg">
+        <td class="first">Состояние</td>
+        <td>
+          <span th:if="${!admview or selfedit}" class ="site" th:text="${userForm.enabled ? 'Активная учетная запись' : 'Запись деактивирована'}"/>
+          <select th:if="${admview && !selfedit}" id="enabled" name = "enabled" class="pw100">
+            <option value = "0" th:selected="${!userForm.enabled}">Запись деактивирована</option>
+            <option value = "1" th:selected="${userForm.enabled}">Активная учетная запись</option>
+          </select>
+        </td>
+      </tr>
+      <tr th:if="${admview or selfedit}" class="passchng">
+        <td class="first">Пароль</td>
+        <td>
+          <input type="password" name="password" size="70" />
+          <strong class="error" th:if="${#fields.hasErrors('userForm.password') && (userForm.action == '.passchng' || userForm.action == '.reg')}" th:errors="${userForm.password}"></strong>
+        </td>
+      </tr>
+      <tr th:if="${admview or selfedit}" class="passchng">
+        <td>Повтор пароля</td>
+        <td>
+          <input type="password" name="passwordConfirm" size="70" />
+          <strong class="error" th:if="${#fields.hasErrors('userForm.passwordConfirm') && (userForm.action == '.passchng' || userForm.action == '.reg')}" th:errors="${userForm.passwordConfirm}"></strong>
+        </td>
+      </tr>
+      <tr th:if="${admview or selfedit}" class="mailchng">
+        <td class="first">Электронная почта</td>
+        <td>
+          <input type="text" name="email" size="70" />
+          <strong class="error" th:if="${#fields.hasErrors('userForm.email') && (userForm.action == '.mailchng' || userForm.action == '.reg')}" th:errors="${userForm.email}"></strong>
+        </td>
+      </tr>
+      <tr th:if="${admview or selfedit}" class="mailchng">
+        <td>Повтор почты</td>
+        <td>
+          <input type="text" name="emailConfirm" size="70" />
+          <strong class="error" th:if="${#fields.hasErrors('userForm.emailConfirm') && (userForm.action == '.mailchng' || userForm.action == '.reg')}" th:errors="${userForm.emailConfirm}"></strong>
+        </td>
+      </tr>
+      <tr th:if="${admview or selfedit}" class="tfoot">
+        <td colspan="2">
+          <input type="hidden" name="emailOld" id="emailOld" th:value="${userForm.emailOld}" th:if="${userForm.action != '.reg'}"/>
+          <input type="hidden" name="id" id="id" th:value="${userForm.id}" th:if="${userForm.action != '.reg'}"/>
+          <input type="hidden" name="login" id="login" th:value="${userForm.login}" th:if="${userForm.action != '.reg'}"/>
+          <input type="hidden" name="action" id="action" th:value="${userForm.action}"/>
+          <input type="hidden" name="returnhttp" id="returnhttp" th:value="${userForm.returnhttp}"/>
+          <input class="main-button" value="Сохранить" type="submit" />
+        </td>
+      </tr>
+    </table>
+  </form>
+</div>
+</body>
+</html>

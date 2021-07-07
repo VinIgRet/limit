@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<body>
+<th:block layout:fragment="content">
+    <div class="section">
+        <table class="work-head">
+            <tr>
+                <th class="work-no-sort">Учетные учреждения</th>
+            </tr>
+        </table>
+        <div id="ask_users" style="display:none">&nbsp;</div>
+        <div id ="fulllist">
+        <form id="form_userlist" th:action="@{/uchr/list}" method="post">
+            <table id="list" class="work tablesort" th:data-listlink="@{/uchr/list/update}" data-sf="" data-lstp="">
+                <th:block th:fragment="fulllistUchr">
+                <tbody class="listheader">
+                    <tr class="head-cntrl nodrag nodrop">
+                        <td colspan="5">&nbsp;
+                            <div class="paginat amount">
+                                <a class="pages pagnu_10" href="javascript:void(0)" th:classappend="${zapPage.size == 1} ? 'disabled selpag'" data-n="1">1</a>
+                                <a class="pages pagnu_10" href="javascript:void(0)" th:classappend="${zapPage.size == 2} ? 'disabled selpag'" data-n="2">2</a>
+                                <a class="pages pagnu_10" href="javascript:void(0)" th:classappend="${zapPage.size == 10} ? 'disabled selpag'" data-n="10">10</a>
+                                <a class="pages pagnu_25" href="javascript:void(0)" th:classappend="${zapPage.size == 25} ? 'disabled selpag'" data-n="25">25</a>
+                                <a class="pages pagnu_50" href="javascript:void(0)" th:classappend="${zapPage.size == 50} ? 'disabled selpag'" data-n="50">50</a>
+                                <a class="pages pagnu_75" href="javascript:void(0)" th:classappend="${zapPage.size == 75} ? 'disabled selpag'" data-n="75">75</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="nodrag nodrop">
+                        <th class="work-no-sort sw30"></th>
+                        <th class="work-no-sort sw100">ID</th>
+                        <th class="work-no-sort pw10">код</th>
+                        <th class="work-no-sort">наименование</th>
+                    </tr>
+                </tbody>
+                <tbody class="listbody ajaxlist">
+                    <th:block th:replace="fragments/sections :: listUchr"></th:block>
+                    <tr th:if="${zapPage.content.size == 0}" class="list nodrag nodrop no_del no_move no_act no_deact no_edit no_acc" id="lst_0" data-id="0">
+                        <td colspan="5" class="ac vm">Данный отсутствуют</td>
+                    </tr>
+                </tbody>
+                <tbody class="listfooter">
+                    <tr class="foot-cntrl nodrag nodrop">
+                        <td colspan="5">&nbsp;
+                            <div th:replace="fragments/sections :: listfield"></div>
+                            <div class="paginat listpags">
+                                <a class="pages"
+                                   th:each="i : ${listPage}"
+                                   href="javascript:void(0)" th:text="${i}"
+                                   th:classappend="${i eq zapPage.number + 1} ? 'disabled selpag pagp_'+${i}"
+                                   th:data-p="${i}"
+                                ></a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                </th:block>
+            </table>
+        </form>
+        </div>
+        <script th:src="@{/js/jquery.listDnD.js}"></script>
+        <script>
+            $(function(){
+                $("#list").listDnD(
+                    {
+                        ajax:true,
+                        isDragable:false,
+                        isNumerable:true,
+                        pagination:true,
+                        toolBar:true,
+                        multySelect:true,
+                        contMenuList:[
+                            {
+                                label:"Добавить",
+                                action:"add",
+                            },
+                            {
+                                label:"Редактировать",
+                                action:"edit",
+                                singl:true
+                            },
+                            /*
+                            {
+                                label:"Вкл.",
+                                action:"act",
+                                singl:true
+                            },
+                            {
+                                label:"Выкл.",
+                                action:"deact",
+                                singl:true
+                            },
+                            */
+                            {
+                                label:"Удалить",
+                                action:"del",
+                                singl:true,
+                                mult:true
+                            }
+                        ],
+                        actionLink:{
+                            add:{
+                                lnk:"[[@{/uchr/add/}]]",
+                                ajax:false,
+                                method:"get"
+                            },
+                            edit:{
+                                lnk:"[[@{/uchr/edit/}]]",
+                                ajax:false,
+                                data:"id",
+                                method:"get"
+                            },
+                            /*
+                            act:{
+                                lnk:"[[@{/uchr/edit/}]]",
+                                ajax:true,
+                                method:"get"
+                            },
+                            deact:{
+                                lnk:"[[@{/uchr/edit/}]]",
+                                ajax:true,
+                                method:"get"
+                            },
+                             */
+                            del1:{
+                                lnk:"[[@{/uchr/delete}]]",
+                                ajax:true,
+                                method:"post",
+                                ask:true
+                            },
+                            del:{
+                                lnk:"[[@{/uchr/delete}]]",
+                                ajax:true,
+                                method:"post",
+                                ask:true
+                            }
+                        }
+                    }
+                );
+            });
+        </script>
+    </div>
+</th:block>
+
+<th:block th:fragment="listDelAsk">
+    <form th:action="@{/uchr/delete}" method="delete">
+        <table id="arr-work" class="fb-work">
+            <caption>Удалить</caption>
+            <tbody>
+            <tr>
+                <td class="cont">
+                    <strong>Выбрано: [[${listForm.array.size}]] записей</strong>
+                    <br>
+                    <strong>Внимание!</strong>
+                    <br>
+                    Выбранные записи будут удалены
+                    <br>
+                    Вы подтверждаете удаление?
+                </td>
+            </tr>
+            <tr class="tfoot">
+                <td>
+                    <input th:each="tekzap : ${listForm.array}" type="hidden" name="array[]" th:value="${tekzap}">
+                    <input type="hidden" name="p" th:value="${listForm.p}">
+                    <input type="hidden" name="n" th:value="${listForm.n}">
+                    <input type="hidden" name="s" th:value="${listForm.s}">
+                    <input type="hidden" name="l" th:value="${listForm.l}">
+                    <input type="hidden" id="action" name="a" th:value="${listForm.a}">
+                    <input class="side-button" value="Выполнить" type="submit">&nbsp;&nbsp;
+                    <input class="side-button" onclick="javascript:$.colorbox.close();" value="Отменить" type="button">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</th:block>
+</body>
+</html>

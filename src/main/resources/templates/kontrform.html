@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}">
+<th:block layout:fragment="content">
+  <div th:replace="fragments/urlico :: kontr"></div>
+  <script th:src="@{/js/jquery.apanel.tabs.js}"></script>
+  <script>
+    $(document).ready(
+            function(){
+              $("#tabs a").tabs(".new");
+              $("#tabs").on("click","a",function(){
+                let b = $(this).data("tabs");
+                $("#action").attr("value",b);
+                $(b + " strong.error") .hide();
+              });
+            });
+  </script>
+</th:block>
+</body>
+</html>

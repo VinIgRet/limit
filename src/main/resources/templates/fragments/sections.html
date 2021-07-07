@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<table class="work-head" th:fragment="headertable">
+    <tr>
+        <th class="work-no-sort" th:text="${userForm.formName}"></th>
+        <th class="work-no-sort">
+            <a class="main-button" th:href="@{${userForm.returnhttp}}">Выход</a>
+        </th>
+    </tr>
+</table>
+<th:block th:fragment="basurlico">
+    <!--
+    <tr class="new"><td class="first">Код</td>
+        <td>
+            <input type="text" name="kod" id="kod" th:value="${userForm.kod}" class="sw165" th:if="${admview}"/>
+            <span class ="site" th:text="${userForm.kod}" th:if="${!admview}"/>
+            <strong class="error" th:if="${#fields.hasErrors('userForm.kod') && admview}" th:errors="${userForm.kod}"></strong>
+        </td>
+    </tr>
+    -->
+    <tr class="new">
+        <td class="first">ИНН</td>
+        <td>
+            <span th:if="${!admview}" th:utext="${userForm.inn}" class="pw100"></span>
+            <input th:if="${admview}" type="text" name="inn" id="inn" th:value="${userForm.inn}" class="sw165" maxlength="10"/>
+            <strong class="error" th:if="${#fields.hasErrors('userForm.inn')  && admview}" th:errors="${userForm.inn}"></strong>
+        </td>
+    </tr>
+    <tr class="new">
+        <td class="first">Наименование</td>
+        <td>
+            <input type="text" name="name" id="name" th:value="${userForm.name}" class="pw100" th:if="${admview}"/>
+            <span class ="site" th:text="${userForm.name}" th:if="${!admview}"/>
+            <strong class="error" th:if="${#fields.hasErrors('userForm.name') && admview}" th:errors="${userForm.name}"></strong>
+        </td>
+    </tr>
+    <!--
+    <tr class="new">
+        <td class="first">Актуально с даты</td>
+        <td>
+            <input type="date" name="dateStart" id="dateStart" th:value="${userForm.dateStart}" size="10" th:if="${admview}"/>
+            <span class ="site" th:text="${userForm.dateStart}" th:if="${!admview}"/>
+            <strong class="error" th:if="${#fields.hasErrors('userForm.dateStart') && admview}" th:errors="${userForm.dateStart}"></strong>
+        </td>
+    </tr>
+    <tr class="new">
+        <td class="first">Актуально по дату</td>
+        <td>
+            <input type="date" name="dateEnd" id="dateEnd" th:value="${userForm.dateEnd}" size="10" th:if="${admview}"/>
+            <span class ="site" th:text="${userForm.dateEnd}" th:if="${!admview}"/>
+            <strong class="error" th:if="${#fields.hasErrors('userForm.dateEnd') && admview}" th:errors="${userForm.dateEnd}"></strong>
+        </td>
+    </tr>
+    -->
+</th:block>
+
+<th:block th:fragment="optionUchrUl">
+    <option th:each="uchr : ${listUchetUL}" th:value = "${uchr.id}" th:text="${uchr.name}" ></option>
+</th:block>
+
+<th:block th:fragment="optionParent">
+    <option th:each="uchr : ${listParent}" th:value = "${uchr.id}" th:text="${uchr.name}" th:selected="${uchr.id}==${userForm.parent}"></option>
+</th:block>
+
+<th:block th:fragment="optionUchredit">
+    <option th:each="uchr : ${listUchredit}" th:value = "${uchr.id}" th:text="${uchr.name}" th:selected="${uchr.id}==${userForm.uchreditel}"></option>
+</th:block>
+
+<th:block th:fragment="optionUchetUl">
+    <option th:each="uchr : ${listUchetUL}" th:value = "${uchr.id}" th:text="${uchr.name}" th:selected="${uchr.id}==${userForm.uchetUL}"></option>
+</th:block>
+
+<th:block th:fragment="listfield">
+    <input type="hidden" name="p" id="p" th:value="${listForm.p}"/>
+    <input type="hidden" name="n" id="n" th:value="${listForm.n}"/>
+    <input type="hidden" name="s" id="s" th:value="${listForm.s}"/>
+    <input type="hidden" name="l" id="l" th:value="${listForm.l}"/>
+    <input type="hidden" name="a" id="action" th:value="${listForm.a}"/>
+</th:block>
+
+<th:block th:fragment="listUchr">
+    <tr th:each="tekzap, stat : ${zapPage.content}" th:id="list+${tekzap.id}" class="list no_act site lstp_0" th:data-id="${tekzap.id}">
+        <td>
+            <input class="chkselect" type="checkbox" name="array[]" th:value="${tekzap.id}" > <!--onclick="this.checked=!this.checked"-->
+        </td>
+        <td th:utext="${tekzap.id}"></td>
+        <td th:text="${tekzap.inn}"></td>
+        <td th:text="${tekzap.name}"></td>
+    </tr>
+</th:block>
+
+
+
+
+</body>
+</html>

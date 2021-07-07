@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <title>Учет коммунальных услуг</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../static/css/main.css"  th:href="@{/css/main.css}"  rel="stylesheet" media="screen" />
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+<div layout:fragment="content"></div>
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>
+
+

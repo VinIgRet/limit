@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="utf-8">
+    <title>Учет коммунальных услуг</title>
+    <link rel="stylesheet" th:href="@{/css/loginold.css}">
+</head>
+<body>
+<div class="corereg">
+    <div class="content">
+        <h1>Регистрация пользователя</h1>
+        <form th:action="@{/registration}" th:object="${userForm}" method="post">
+            <div>
+            <label for="login">Логин</label>
+            <input type="text" name="login" id="login" th:value="*{login}" maxlength="15" required="required" autofocus="autofocus" th:errorclass="fieldError" />
+            <strong th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></strong>
+            </div>
+            <div>
+                <label for="email">E-mail</label>
+                <input type="text" name="email" id="email" th:value="*{email}" maxlength="50" th:errorclass="fieldError" />
+                <strong th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></strong>
+            </div>
+            <div>
+                <label for="email">Имя</label>
+                <input type="text" name="title" id="title" th:value="${not #fields.hasErrors('title')}?*{title}" maxlength="100" required="required" th:errorclass="fieldError"  />
+                <strong th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></strong>
+            </div>
+            <div>
+                <label for="password">Пароль</label>
+                <input type="password" name="password" id="password" th:value="${not #fields.hasErrors('password')}?*{password}" maxlength="15" required="required" th:errorclass="fieldError" />
+                <strong th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></strong>
+            </div>
+            <div>
+                <label for="confirm">Пароль (повтор)</label>
+                <input type="password" name="passwordConfirm" id="confirm" th:value="${not #fields.hasErrors('password')}?*{passwordConfirm}" maxlength="15" required="required" th:errorclass="fieldError" />
+                <strong th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}"></strong>
+            </div>
+            <div>
+                <label></label>
+                <input class="blogin" type="submit" value="Отправить" />
+            </div>
+        </form>
+        <a th:href="@{/login}">Назад к форме входа</a>
+    </div>
+</div>
+<div class="powered"><a href="#" target="_blank">VinIgRet76</a><i>©</i> 2021</div>
+</body>
+</html>

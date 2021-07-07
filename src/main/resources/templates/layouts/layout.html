@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru"xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+  <meta charset="UTF-8">
+  <title>Учет коммунальных услуг</title>
+  <link th:href="@{/css/base.css}" rel="stylesheet" />
+  <link th:href="@{/css/template.css}" rel="stylesheet" />
+  <link th:href="@{/css/filebrowser.css}" rel="stylesheet" />
+  <link th:href="@{/css/calendar/calendar.css}" rel="stylesheet" />
+  <link th:href="@{/css/colorbox/colorbox.css}" rel="stylesheet" />
+  <!--<link th:href="@{/css/colorpicker.css}" rel="stylesheet" />-->
+  <script th:src="@{/js/jquery.js}"></script>
+  <script th:src="@{/js/script.js}"></script>
+  <script th:src="@{/js/jquery.tooltip.js}"></script>
+  <script th:src="@{/js/jquery.colorbox.js}"></script>
+  <script>
+    $(function () {
+      var loading = 'Подождите';
+    });
+  </script>
+  <!--
+   <script th:src="@{/js/script.js}"></script>
+   <script th:src="@{/js/jquery.apanel.js}"></script>
+  <script th:src="@{/js/jquery.gritter.js}"></script>
+  <script th:src="@{/js/jquery.tooltip.js}"></script>
+  <script th:src="@{/js/jquery.textarea.js}"></script>
+  <script th:src="@{/js/jquery.colorbox.js}"></script>
+  <script th:src="@{/js/jquery.colorpicker.js}"></script>
+  <script th:src="@{/js/jquery.filebrowser.js}"></script>
+  <script th:src="@{/js/js/url.min.js}"></script>
+  <script th:src="@{/js/calendar/calendar.js}"></script>
+  <script th:src="@{/js/calendar/lang/calendar-{lang}.js}"></script>
+  <link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon" />
+  <link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon" />
+  -->
+</head>
+<body>
+<header>
+  <h1>Система учета коммунальных услуг бюджетного учреждения</h1>
+</header>
+<nav>
+  <!--<a class="desk" href="/index">Рабочий стол</a>-->
+  <a class="profile" th:href="@{/profile}">Профиль пользователя</a>
+  <a class="out" href="/logout">Выход</a>
+</nav>
+<table class="wrapper">
+  <tr>
+    <!--{aside_menu}-->
+    <td id="aside" class="aside" style="display:table-cell">
+      <div th:replace="fragments/sidemenu :: sidemenu"></div>
+    </td>
+    <td class="center">
+      <div class="breadcrumb">
+        <!--{breadcrumb}-->
+      </div>
+      <div class="content">
+        <div class="spacer">
+          <div layout:fragment="content"></div>
+        </div>
+      </div>
+    </td>
+  </tr>
+</table>
+<footer th:replace="fragments/footer :: footer"></footer>
+<script>
+  $(function () {
+    if (cookie('alerts') !== 'off') {
+
+    };
+  });
+</script>
+</body>
+</html>

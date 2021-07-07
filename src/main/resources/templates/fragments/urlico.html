@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<body>
+<div class="section" th:fragment="uchr">
+  <table class="work-head">
+    <tr>
+      <th class="work-no-sort">Учетное учреждение</th>
+      <th class="work-no-sort">
+        <a class="main-button" th:href="@{${userForm.returnhttp}}">Выход</a>
+      </th>
+    </tr>
+  </table>
+  <!--
+  <table class="work work-head">
+    <tr>
+      <td class="sw0"></td>
+      <td>
+        <div class="tabs" id="tabs">
+          <a href="javascript:void(0);" data-tabs=".new">Основные данные</a>
+          <a th:if="${userForm.action =='.edt'}" href="javascript:void(0);" data-tabs=".mailchng">Смена E-mail</a>
+          <a th:if="${userForm.action =='.edt'}" href="javascript:void(0);" data-tabs=".passchng">Смена пароля</a>
+        </div>
+      </td>
+    </tr>
+  </table>
+  -->
+  <div th:errors="${userForm}">...</div>
+  <form th:action="@{/uchr/save}" method="post">
+    <table class="work">
+      <tr class="osn">
+        <td class="first">Тип записи</td>
+        <td>
+          <select th:if="${admview}" id="groupUchr" name = "groupUchr" class="pw100">
+            <option value = "0" th:selected="${!userForm.groupUchr}">Отдельное учреждение</option>
+            <option value = "1" th:selected="${userForm.groupUchr}">Группировочная структура</option>
+          </select>
+        </td>
+      </tr>
+      <tr class="osn">
+        <td class="first">Учредитель</td>
+        <td>
+          <select th:if="${admview}" id="uchreditel" name = "uchreditel" class="pw100">
+            <option th:if="${!userForm.groupUchr}" value = "0">Является учредителем сам</option>
+            <th:block th:replace="fragments/sections :: optionUchredit"></th:block>
+          </select>
+        </td>
+      </tr>
+      <tr class="osn">
+        <td class="first">Раздел, подраздел по БК</td>
+        <td>
+          <input type="text" name="razdelBK" id="razdelBK" th:value="${userForm.razdelBK}" rerqured="requred" minlength="2" maxlength="2" size="1" pattern="[0-9]{2}"/>&nbsp;
+          <input type="text" name="podrazdelBK" id="podrazdelBK" th:value="${userForm.podrazdelBK}" rerqured="requred" minlength="2" maxlength="2" size="1" pattern="[0-9]{2}"/>
+        </td>
+      </tr>
+      <tr class="osn">
+        <td class="first">Тип учреждения</td>
+        <td>
+          <select th:if="${admview}" id="uchetULKind" name = "uchetULKind" class="pw100">
+            <option value = "0" th:selected="${userForm.uchetULKind == 0}">Свод учреждений</option>
+            <option value = "1" th:selected="${userForm.uchetULKind == 1}">Казенное учреждение</option>
+            <option value = "2" th:selected="${userForm.uchetULKind == 2}">Бюджетное учреждение</option>
+            <option value = "3" th:selected="${userForm.uchetULKind == 3}">Автономное учреждение</option>
+          </select>
+        </td>
+      </tr>
+      <tr class="osn">
+        <td class="first">Входит в группу</td>
+        <td>
+          <select th:if="${admview}" id="parent" name = "parent" class="pw100">
+            <option value = "0" th:selected="${userForm.parent == 0}">----------------------------------</option>
+            <th:block th:replace="fragments/sections :: optionParent"></th:block>
+          </select>
+        </td>
+      </tr>
+      <th:block th:replace="fragments/sections :: basurlico"></th:block>
+      <tr th:if="${admview}" class="tfoot">
+        <td colspan="2">
+          <input type="hidden" name="id" id="id" th:value="${userForm.id}" />
+          <input type="hidden" name="action" id="action" th:value="${userForm.action}"/>
+          <input type="hidden" name="returnhttp" id="returnhttp" th:value="${userForm.returnhttp}"/>
+          <input class="main-button" value="Сохранить" type="submit" />
+        </td>
+      </tr>
+      <tr><th colspan="2"></th></tr>
+    </table>
+  </form>
+</div>
+<div class="section" th:fragment="kontr">
+  <table class="work-head">
+    <tr>
+      <th class="work-no-sort">Контрагент</th>
+      <th class="work-no-sort">
+        <a class="main-button" th:href="@{${userForm.returnhttp}}">Выход</a>
+      </th>
+    </tr>
+  </table>
+  <table class="work work-head">
+    <tr>
+      <td class="sw0"></td>
+      <td>
+        <div class="tabs" id="tabs">
+          <a href="javascript:void(0);" data-tabs=".new">Основные данные</a>
+          <a href="javascript:void(0);" data-tabs=".usl">Оказываемые услуги</a>
+        </div>
+      </td>
+    </tr>
+  </table>
+  <div th:errors="${userForm}">...</div>
+  <form th:action="@{/kontr/save}" method="post">
+    <table class="work">
+      <th:block th:replace="fragments/sections :: basurlico"></th:block>
+      <tr th:if="${admview}" class="tfoot">
+        <td colspan="2">
+          <input type="hidden" name="id" id="id" th:value="${userForm.id}"/>
+          <input type="text" name="action" id="action" th:value="${userForm.action}"/>
+          <input type="hidden" name="returnhttp" id="returnhttp" th:value="${userForm.returnhttp}"/>
+          <input class="main-button" value="Сохранить" type="submit" />
+        </td>
+      </tr>
+      <tr><th colspan="2"></th></tr>
+    </table>
+  </form>
+</div>
+
+
+</body>
+</html>
