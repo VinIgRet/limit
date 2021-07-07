@@ -89,4 +89,5 @@ public class UchetULMapper {
         destination.setRazdelBK(source.getRazdelBK() + ("00".equals(source.getPodrazdelBK()) ? "" : source.getPodrazdelBK()));
     }
 
+
 }
